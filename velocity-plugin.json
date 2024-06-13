@@ -1,7 +1,7 @@
-{"id":"vct",
-"name":"VCT",
-"version":"1-0-0",
-"description":"Velocity Test Plugin",
+{"id":"ptm",
+"name":"ProxyTeleportManager",
+"version":"0-0-1",
+"description":"Teleportsystem for Velocity and maybe more...",
 "authors":["Avankziar"],
 "dependencies":[],
-"main":"main.java.me.avankziar.vct.velocity.VCT"}
+"main":"main.java.me.avankziar.ptm.velocity.PTM"}

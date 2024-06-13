@@ -15,7 +15,7 @@ import com.velocitypowered.api.proxy.messages.ChannelRegistrar;
 import main.java.me.avankziar.ptm.velocity.assistant.StaticValues;
 import main.java.me.avankziar.ptm.velocity.listener.PluginMessageListener;
 
-@Plugin(id = "ptm", name = "ProxyTeleportManager", version = "1-0-0",
+@Plugin(id = "ptm", name = "ProxyTeleportManager", version = "0-0-1",
 		url = "https://example.org", description = "Teleportsystem for Velocity and maybe more...", authors = {"Avankziar"})
 public class PTM
 {
@@ -25,7 +25,6 @@ public class PTM
     
     @Inject
     public PTM(ProxyServer server, Logger logger) 
-    
     {
     	PTM.plugin = this;
         this.server = server;
@@ -35,7 +34,7 @@ public class PTM
         List<String> dependencies = new ArrayList<>();
         pd.getDependencies().stream().allMatch(x -> dependencies.add(x.toString()));
         //https://patorjk.com/software/taag/#p=display&f=ANSI%20Shadow&t=PTM
-		logger.info(" ██████╗ ████████╗███╗   ███╗ | API-Version: "+pd.getId());//plugin.getDescription().getVersion());
+		logger.info(" ██████╗ ████████╗███╗   ███╗ | Id: "+pd.getId());//plugin.getDescription().getVersion());
 		logger.info(" ██╔══██╗╚══██╔══╝████╗ ████║ | Author: ["+String.join(" ", pd.getAuthors())+"]");
 		logger.info(" ██████╔╝   ██║   ██╔████╔██║ | Plugin Website: "+pd.getUrl().toString());
 		logger.info(" ██╔═══╝    ██║   ██║╚██╔╝██║ | Dependencies Plugins: ["+String.join(" ", dependencies)+"]");
