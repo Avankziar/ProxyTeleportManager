@@ -1,0 +1,7 @@
+{"id":"vct",
+"name":"VCT",
+"version":"1-0-0",
+"description":"Velocity Test Plugin",
+"authors":["Avankziar"],
+"dependencies":[],
+"main":"main.java.me.avankziar.vct.velocity.VCT"}
