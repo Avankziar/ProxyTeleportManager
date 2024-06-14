@@ -10,6 +10,9 @@ import com.velocitypowered.api.proxy.server.RegisteredServer;
 import main.java.me.avankziar.ptm.velocity.PTM;
 import main.java.me.avankziar.ptm.velocity.assistant.StaticValues;
 import main.java.me.avankziar.ptm.velocity.manager.BackHandler;
+import main.java.me.avankziar.ptm.velocity.manager.HomeHandler;
+import main.java.me.avankziar.ptm.velocity.manager.PortalHandler;
+import main.java.me.avankziar.ptm.velocity.manager.WarpHandler;
 
 public class PluginMessageListener
 {
@@ -37,8 +40,18 @@ public class PluginMessageListener
             }
         	if (event.getIdentifier() == StaticValues.HOME_TOBUNGEE) 
             {
-        		
+        		new HomeHandler(plugin).pluginMessage(event);
                 return;
+            }
+        	if (event.getIdentifier() == StaticValues.PORTAL_TOBUNGEE) 
+            {
+        		new PortalHandler(plugin).pluginMessage(event);
+        		return;
+            }
+        	if (event.getIdentifier() == StaticValues.WARP_TOBUNGEE) 
+            {
+        		new WarpHandler(plugin).pluginMessage(event);
+        		return;
             }
 		} catch (IOException e)
 		{

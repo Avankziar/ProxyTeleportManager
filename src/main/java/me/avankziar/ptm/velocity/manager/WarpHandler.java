@@ -19,11 +19,11 @@ import main.java.me.avankziar.ptm.velocity.objects.Mechanics;
 import main.java.me.avankziar.ptm.velocity.objects.ServerLocation;
 import net.kyori.adventure.text.Component;
 
-public class HomeHandler
+public class WarpHandler
 {
-	private PTM plugin;
+private PTM plugin;
 	
-	public HomeHandler(PTM plugin)
+	public WarpHandler(PTM plugin)
 	{
 		this.plugin = plugin;
 	}
@@ -32,11 +32,12 @@ public class HomeHandler
 	{
 		DataInputStream in = new DataInputStream(new ByteArrayInputStream(event.getData()));
         String task = in.readUTF();
-        if(task.equals(StaticValues.HOME_PLAYERTOPOSITION))
+        
+        if(task.equals(StaticValues.WARP_PLAYERTOPOSITION))
         {
         	String uuid = in.readUTF();
         	String playerName = in.readUTF();
-        	String homeName = in.readUTF();
+        	String warpName = in.readUTF();
         	String server = in.readUTF();
         	String worldName = in.readUTF();
         	double x = in.readDouble();
@@ -44,27 +45,30 @@ public class HomeHandler
         	double z = in.readDouble();
         	float yaw = in.readFloat();
         	float pitch = in.readFloat();
-        	int delayed = in.readInt();
-        	BackHandler.getBack(in, uuid, playerName, Mechanics.HOME);
+        	int delay = in.readInt();
+        	String pterc = in.readUTF();
+        	String ptegc = in.readUTF();
+        	BackHandler.getBack(in, uuid, playerName, Mechanics.WARP);
         	ServerLocation location = new ServerLocation(server, worldName, x, y, z, yaw, pitch);
-        	HomeHandler hh = new HomeHandler(plugin);	
-        	hh.teleportPlayerToHome(playerName, uuid, location, homeName, delayed);
+        	WarpHandler wh = new WarpHandler(plugin);
+        	wh.teleportPlayerToWarp(playerName, warpName, location, delay, pterc, ptegc);
         	return;
         }
         return;
 	}
 	
-	public void teleportPlayerToHome(String playerName, String uuid, ServerLocation location, String homeName, int delay)
+	public void teleportPlayerToWarp(String playerName, String warpName, ServerLocation location, int delayed,
+			String pterc, String ptegc)
 	{
 		Player player = plugin.getServer().getPlayer(playerName).get();
-		if(player == null || location == null)
+		if(player == null)
 		{
 			return;
-		}		
-		teleportPlayer(player, delay, location, homeName); //Back wurde schon gemacht.
+		}
+		teleportPlayer(player, delayed, warpName, location, pterc, ptegc); //Back wurde schon gemacht
 	}
 	
-	public void teleportPlayer(Player player, int delay, ServerLocation location, String homeName)
+	public void teleportPlayer(Player player, int delay, String warpName, final ServerLocation location, String pterc, String ptegc)
 	{
 		if(player == null || location == null)
 		{
@@ -93,20 +97,22 @@ public class HomeHandler
 			ByteArrayOutputStream streamout = new ByteArrayOutputStream();
 	        DataOutputStream out = new DataOutputStream(streamout);
 	        try {
-	        	out.writeUTF(StaticValues.HOME_PLAYERTOPOSITION);
+	        	out.writeUTF(StaticValues.WARP_PLAYERTOPOSITION);
 				out.writeUTF(player.getUsername());
-				out.writeUTF(homeName);
+				out.writeUTF(warpName);
 				out.writeUTF(location.getWorldName());
 				out.writeDouble(location.getX());
 				out.writeDouble(location.getY());
 				out.writeDouble(location.getZ());
 				out.writeFloat(location.getYaw());
 				out.writeFloat(location.getPitch());
+				out.writeUTF(pterc);
+				out.writeUTF(ptegc);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-	        plugin.getServer().getServer(location.getServer()).get().sendPluginMessage(StaticValues.HOME_TOSPIGOT, streamout.toByteArray());
-	        return;
+	        plugin.getServer().getServer(location.getServer()).get().sendPluginMessage(StaticValues.WARP_TOSPIGOT, streamout.toByteArray());
+			return;
 		}).delay(delay, TimeUnit.MILLISECONDS).schedule();
 	}
 }

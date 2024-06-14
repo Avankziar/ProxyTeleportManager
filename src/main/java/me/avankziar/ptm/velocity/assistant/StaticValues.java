@@ -8,7 +8,11 @@ public class StaticValues
 	 		BACK_TOBUNGEE = MinecraftChannelIdentifier.from("btm:backtobungee"),
 			BACK_TOSPIGOT = MinecraftChannelIdentifier.from("btm:backtospigot"),
 			HOME_TOBUNGEE = MinecraftChannelIdentifier.from("btm:hometobungee"),
-			HOME_TOSPIGOT = MinecraftChannelIdentifier.from("btm:hometospigot");
+			HOME_TOSPIGOT = MinecraftChannelIdentifier.from("btm:hometospigot"),
+			PORTAL_TOBUNGEE = MinecraftChannelIdentifier.from("btm:portaltobungee"),
+			PORTAL_TOSPIGOT = MinecraftChannelIdentifier.from("btm:portaltospigot"),
+			WARP_TOBUNGEE = MinecraftChannelIdentifier.from("btm:warptobungee"),
+			WARP_TOSPIGOT = MinecraftChannelIdentifier.from("btm:warptospigot");
 	 
 	 final public static String
 		//General
@@ -51,8 +55,6 @@ public class StaticValues
 		IFH_PLAYERTOPOSITION = "ifh-playertoposition",
 		
 		//PORTAL Sending
-		PORTAL_TOBUNGEE = "btm:portaltobungee",
-		PORTAL_TOSPIGOT = "btm:portaltospigot",
 		PORTAL_PLAYERTOPOSITION = "portal-playertoposition",
 		PORTAL_SOUND = "portal-sound",
 		PORTAL_UPDATE = "portal-update",
@@ -99,8 +101,6 @@ public class StaticValues
 		TP_TOGGLED = "tp-toggled",
 		
 		//WARP Sending
-		WARP_TOBUNGEE = "btm:warptobungee",
-		WARP_TOSPIGOT = "btm:warptospigot",
 		WARP_PLAYERTOPOSITION = "warp-playertoposition",
 		
 		//SAFE Location Sending

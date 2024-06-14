@@ -15,7 +15,7 @@ import com.velocitypowered.api.proxy.messages.ChannelRegistrar;
 import main.java.me.avankziar.ptm.velocity.assistant.StaticValues;
 import main.java.me.avankziar.ptm.velocity.listener.PluginMessageListener;
 
-@Plugin(id = "ptm", name = "ProxyTeleportManager", version = "0-0-1",
+@Plugin(id = "ptm", name = "ProxyTeleportManager", version = "0-0-2",
 		url = "https://example.org", description = "Teleportsystem for Velocity and maybe more...", authors = {"Avankziar"})
 public class PTM
 {
@@ -30,7 +30,13 @@ public class PTM
         this.server = server;
         PTM.logger = logger;
 
-        PluginDescription pd = server.getPluginManager().getPlugin("ptm").get().getDescription();
+    }
+    
+    @Subscribe
+    public void onProxyInitialization(ProxyInitializeEvent event) 
+    {
+    	//server.getEventManager().register(this, this); INFO Die MainKlasse ist immer in Velocity schon registriert
+    	PluginDescription pd = server.getPluginManager().getPlugin("ptm").get().getDescription();
         List<String> dependencies = new ArrayList<>();
         pd.getDependencies().stream().allMatch(x -> dependencies.add(x.toString()));
         //https://patorjk.com/software/taag/#p=display&f=ANSI%20Shadow&t=PTM
@@ -40,18 +46,16 @@ public class PTM
 		logger.info(" ██╔═══╝    ██║   ██║╚██╔╝██║ | Dependencies Plugins: ["+String.join(" ", dependencies)+"]");
 		logger.info(" ██║        ██║   ██║ ╚═╝ ██║ | Version: "+pd.getVersion().get());
 		logger.info(" ╚═╝        ╚═╝   ╚═╝     ╚═╝ | Have Fun^^");
-    }
-    
-    @Subscribe
-    public void onProxyInitialization(ProxyInitializeEvent event) 
-    {
-    	//server.getEventManager().register(this, this); INFO Die MainKlasse ist immer in Velocity schon registriert
     	server.getEventManager().register(plugin, new PluginMessageListener(plugin));
     	ChannelRegistrar cr = server.getChannelRegistrar();
         cr.register(StaticValues.BACK_TOBUNGEE);
         cr.register(StaticValues.BACK_TOSPIGOT);
         cr.register(StaticValues.HOME_TOBUNGEE);
         cr.register(StaticValues.HOME_TOSPIGOT);
+        cr.register(StaticValues.PORTAL_TOBUNGEE);
+        cr.register(StaticValues.PORTAL_TOSPIGOT);
+        cr.register(StaticValues.WARP_TOBUNGEE);
+        cr.register(StaticValues.WARP_TOSPIGOT);
     }
     
     public static PTM getPlugin()

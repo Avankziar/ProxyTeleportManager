@@ -1,6 +1,6 @@
 {"id":"ptm",
 "name":"ProxyTeleportManager",
-"version":"0-0-1",
+"version":"0-0-2",
 "description":"Teleportsystem for Velocity and maybe more...",
 "authors":["Avankziar"],
 "dependencies":[],

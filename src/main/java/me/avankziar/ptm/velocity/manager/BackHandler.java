@@ -7,6 +7,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -14,6 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.velocitypowered.api.event.connection.PluginMessageEvent;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
+import com.velocitypowered.api.proxy.server.RegisteredServer;
 
 import main.java.me.avankziar.ptm.velocity.PTM;
 import main.java.me.avankziar.ptm.velocity.assistant.StaticValues;
@@ -270,7 +272,7 @@ public class BackHandler
     	}
     	if(!PluginMessageListener.containsServer(oldserver))
 		{
-			player.sendMessage(Component.text("Server is unknow!"));
+    		player.sendMessage(Component.text("Server %server% is unknown!".replace("%server%", oldserver)));
 			return;
 		}
     	int delayHalf = delay/2;
@@ -287,7 +289,8 @@ public class BackHandler
 			}
 			if(!player.getCurrentServer().get().getServerInfo().getName().equals(oldserver))
 			{
-				player.createConnectionRequest(plugin.getServer().getServer(oldserver).get());
+				Optional<RegisteredServer> server = plugin.getServer().getServer(oldserver);
+				server.ifPresent((target) -> player.createConnectionRequest(target).connect());
 			}
 			AtomicInteger integer = new AtomicInteger(0);
 			plugin.getServer().getScheduler().buildTask(plugin, (selftask) ->
@@ -322,8 +325,7 @@ public class BackHandler
 					out.writeFloat(oldpitch);
 				} catch (IOException e) {
 					e.printStackTrace();
-				}
-		        
+				}		        
 		        plugin.getServer().getServer(oldserver).get().sendPluginMessage(StaticValues.BACK_TOSPIGOT, streamout.toByteArray());
 			    if(isDeathback && deleteDeathBack)
 			    {
