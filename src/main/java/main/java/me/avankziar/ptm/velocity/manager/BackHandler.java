@@ -9,22 +9,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future.State;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import com.velocitypowered.api.event.connection.PluginMessageEvent;
+import com.velocitypowered.api.proxy.ConnectionRequestBuilder.Result;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 
 import main.java.me.avankziar.ptm.velocity.PTM;
+import main.java.me.avankziar.ptm.velocity.assistant.ChatApi;
 import main.java.me.avankziar.ptm.velocity.assistant.StaticValues;
 import main.java.me.avankziar.ptm.velocity.listener.PluginMessageListener;
 import main.java.me.avankziar.ptm.velocity.objects.Back;
 import main.java.me.avankziar.ptm.velocity.objects.ForbiddenHandlerBungee;
 import main.java.me.avankziar.ptm.velocity.objects.Mechanics;
 import main.java.me.avankziar.ptm.velocity.objects.ServerLocation;
-import net.kyori.adventure.text.Component;
 
 public class BackHandler
 {
@@ -93,7 +95,7 @@ public class BackHandler
         		Player player = server.getPlayer(UUID.fromString(uuid)).get();
         		if(player != null)
         		{
-        			player.sendMessage(Component.text(oldbacknull));
+        			player.sendMessage(ChatApi.tl(oldbacknull));
         		}
         		//Sorgt dafür, dass das Back nicht überschrieben, falls der Spieler in einer Forbidden Welt oder Server ist.
             	if(!ForbiddenHandlerBungee.isForbidden(back, name, Mechanics.BACK, false))
@@ -158,7 +160,7 @@ public class BackHandler
     			} catch (IOException e) {
     				e.printStackTrace();
     			}
-    	        player.getCurrentServer().get().getServer().sendPluginMessage(StaticValues.BACK_TOSPIGOT, streamout.toByteArray());
+    	        player.getCurrentServer().ifPresent(y -> y.getServer().sendPluginMessage(StaticValues.BACK_TOSPIGOT, streamout.toByteArray()));
     		    return;
         	}
         	Back olddeathback = BackHandler.getDeathBackLocations().get(name);
@@ -212,7 +214,7 @@ public class BackHandler
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	    player.getCurrentServer().get().getServer().sendPluginMessage(StaticValues.BACK_TOSPIGOT, streamout.toByteArray());
+        player.getCurrentServer().ifPresent(y -> y.getServer().sendPluginMessage(StaticValues.BACK_TOSPIGOT, streamout.toByteArray()));
 	}
 
 	public static void getBack(DataInputStream in, String uuid, String name, Mechanics mechanics) throws IOException
@@ -265,79 +267,80 @@ public class BackHandler
 	public void teleportBack(String oldserver, String name, String oldworld,
 			double oldx, double oldy, double oldz, float oldyaw, float oldpitch, boolean deleteDeathBack, int delay, boolean isDeathback)
 	{
-		Player player = plugin.getServer().getPlayer(name).get();
-    	if(player == null)
+		Optional<Player> opplayer = plugin.getServer().getPlayer(name);
+    	if(opplayer.isEmpty())
     	{
     		return;
     	}
+    	Player player = plugin.getServer().getPlayer(name).get();
     	if(!PluginMessageListener.containsServer(oldserver))
 		{
-    		player.sendMessage(Component.text("Server %server% is unknown!".replace("%server%", oldserver)));
+			player.sendMessage(ChatApi.tl("<dark_red>Error</dark_red> <white>1</white> <red>- Server %server% is unknown!</red>"
+					.replace("%server%", oldserver)));
+			return;
+		}
+    	Optional<RegisteredServer> server = plugin.getServer().getServer(oldserver);
+		if(server.isEmpty())
+		{
+			player.sendMessage(ChatApi.tl("<dark_red>Error</dark_red> <white>2</white> <red>- Server %server% is unknown!</red>"
+					.replace("%server%", oldserver)));
 			return;
 		}
     	int delayHalf = delay/2;
-    	plugin.getServer().getScheduler().buildTask(plugin, () ->
+    	plugin.getServer().getScheduler().buildTask(plugin, (task) ->
 		{
-			if(player == null || oldserver == null)
-			{
-				return;
-			}
-			if(player.getCurrentServer() == null || player.getCurrentServer().get().getServerInfo() == null 
-					|| player.getCurrentServer().get().getServerInfo().getName() == null)
-			{
-				return;
-			}
+			CompletableFuture<Result> r = null;
 			if(!player.getCurrentServer().get().getServerInfo().getName().equals(oldserver))
 			{
-				Optional<RegisteredServer> server = plugin.getServer().getServer(oldserver);
-				server.ifPresent((target) -> player.createConnectionRequest(target).connect());
+				r = player.createConnectionRequest(server.get()).connect();
 			}
-			AtomicInteger integer = new AtomicInteger(0);
-			plugin.getServer().getScheduler().buildTask(plugin, (selftask) ->
-			{
-				if(player == null || oldserver == null)
-				{
-					selftask.cancel();
-					return;
-				}
-				if(player.getCurrentServer() == null || player.getCurrentServer().get().getServerInfo() == null 
-						|| player.getCurrentServer().get().getServerInfo().getName() == null)
-				{
-					selftask.cancel();
-					return;
-				}
-				ByteArrayOutputStream streamout = new ByteArrayOutputStream();
-		        DataOutputStream out = new DataOutputStream(streamout);
-		        try {
-		        	if(!isDeathback)
-		        	{
-		        		out.writeUTF(StaticValues.BACK_SENDPLAYERBACK);
-		        	} else
-		        	{
-		        		out.writeUTF(StaticValues.BACK_SENDPLAYERDEATHBACK);
-		        	}
-					out.writeUTF(name);
-					out.writeUTF(oldworld);
-					out.writeDouble(oldx);
-					out.writeDouble(oldy);
-					out.writeDouble(oldz);
-					out.writeFloat(oldyaw);
-					out.writeFloat(oldpitch);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}		        
-		        plugin.getServer().getServer(oldserver).get().sendPluginMessage(StaticValues.BACK_TOSPIGOT, streamout.toByteArray());
-			    if(isDeathback && deleteDeathBack)
-			    {
-			    	BackHandler.getDeathBackLocations().remove(name);
-			    }
-			    selftask.cancel();
-				if(integer.addAndGet(1) >= 100)
-				{
-					selftask.cancel();
-				    return;
-				}
-			}).repeat(5, TimeUnit.MILLISECONDS).schedule();
+			sendPluginMessage(player, server.get(), r, oldserver, name, oldworld, oldx, oldy, oldz, oldyaw, oldpitch, deleteDeathBack, isDeathback);
 		}).delay(delayHalf, TimeUnit.MILLISECONDS).schedule();
+	}
+	
+	private void sendPluginMessage(Player player, RegisteredServer server, CompletableFuture<Result> result,
+			String oldserver, String name, String oldworld,
+			double oldx, double oldy, double oldz, float oldyaw, float oldpitch, boolean deleteDeathBack, boolean isDeathback)
+	{
+		plugin.getServer().getScheduler().buildTask(plugin, (task) ->
+		{
+			if(result != null)
+			{
+				if(result.state() == State.RUNNING)
+				{
+					return;
+				} else if(result.state() == State.CANCELLED || result.state() == State.FAILED)
+				{
+					task.cancel();
+					return;
+				}
+			}
+			task.cancel();
+			ByteArrayOutputStream streamout = new ByteArrayOutputStream();
+	        DataOutputStream out = new DataOutputStream(streamout);
+	        try {
+	        	if(!isDeathback)
+	        	{
+	        		out.writeUTF(StaticValues.BACK_SENDPLAYERBACK);
+	        	} else
+	        	{
+	        		out.writeUTF(StaticValues.BACK_SENDPLAYERDEATHBACK);
+	        	}
+				out.writeUTF(name);
+				out.writeUTF(oldworld);
+				out.writeDouble(oldx);
+				out.writeDouble(oldy);
+				out.writeDouble(oldz);
+				out.writeFloat(oldyaw);
+				out.writeFloat(oldpitch);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}		        
+	        plugin.getServer().getServer(oldserver).get().sendPluginMessage(StaticValues.BACK_TOSPIGOT, streamout.toByteArray());
+		    if(isDeathback && deleteDeathBack)
+		    {
+		    	BackHandler.getDeathBackLocations().remove(name);
+		    }
+		}).repeat(20, TimeUnit.MILLISECONDS).schedule();
 	}
 }

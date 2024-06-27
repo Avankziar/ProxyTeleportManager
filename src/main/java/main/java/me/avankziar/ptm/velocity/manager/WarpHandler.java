@@ -6,18 +6,22 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future.State;
 import java.util.concurrent.TimeUnit;
 
 import com.velocitypowered.api.event.connection.PluginMessageEvent;
+import com.velocitypowered.api.proxy.ConnectionRequestBuilder.Result;
 import com.velocitypowered.api.proxy.Player;
+import com.velocitypowered.api.proxy.ServerConnection;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 
 import main.java.me.avankziar.ptm.velocity.PTM;
+import main.java.me.avankziar.ptm.velocity.assistant.ChatApi;
 import main.java.me.avankziar.ptm.velocity.assistant.StaticValues;
 import main.java.me.avankziar.ptm.velocity.listener.PluginMessageListener;
 import main.java.me.avankziar.ptm.velocity.objects.Mechanics;
 import main.java.me.avankziar.ptm.velocity.objects.ServerLocation;
-import net.kyori.adventure.text.Component;
 
 public class WarpHandler
 {
@@ -50,50 +54,73 @@ private PTM plugin;
         	String ptegc = in.readUTF();
         	BackHandler.getBack(in, uuid, playerName, Mechanics.WARP);
         	ServerLocation location = new ServerLocation(server, worldName, x, y, z, yaw, pitch);
-        	WarpHandler wh = new WarpHandler(plugin);
-        	wh.teleportPlayerToWarp(playerName, warpName, location, delay, pterc, ptegc);
+        	teleportPlayer(playerName, delay, warpName, location, pterc, ptegc);
         	return;
         }
         return;
 	}
 	
-	public void teleportPlayerToWarp(String playerName, String warpName, ServerLocation location, int delayed,
-			String pterc, String ptegc)
+	public void teleportPlayer(String playerName, int delay, String warpName, final ServerLocation location, String pterc, String ptegc)
 	{
-		Player player = plugin.getServer().getPlayer(playerName).get();
-		if(player == null)
+		Optional<Player> opplayer = plugin.getServer().getPlayer(playerName);
+		if(opplayer.isEmpty())
 		{
 			return;
 		}
-		teleportPlayer(player, delayed, warpName, location, pterc, ptegc); //Back wurde schon gemacht
-	}
-	
-	public void teleportPlayer(Player player, int delay, String warpName, final ServerLocation location, String pterc, String ptegc)
-	{
-		if(player == null || location == null)
+		Player player = opplayer.get();
+		if(location == null)
 		{
+			player.sendMessage(ChatApi.tl("<dark_red>Error</dark_red> <white>1</white> <red>- Serverlocation is unknown!</red>"));
 			return;
 		}
 		if(!PluginMessageListener.containsServer(location.getServer()))
 		{
-			player.sendMessage(Component.text("Server %server% is unknown!".replace("%server%", location.getServer())));
+			player.sendMessage(ChatApi.tl("<dark_red>Error</dark_red> <white>2</white> <red>- Server %server% is unknown!</red>"
+					.replace("%server%", location.getServer())));
 			return;
 		}
-		plugin.getServer().getScheduler().buildTask(plugin, () ->
+		Optional<RegisteredServer> server = plugin.getServer().getServer(location.getServer());
+		if(server.isEmpty())
 		{
-			if(player == null || location == null)
-			{
-				return;
-			}
-			if(location.getServer() == null)
-			{
-				return;
-			}
+			player.sendMessage(ChatApi.tl("<dark_red>Error</dark_red> <white>3</white> <red>- Server %server% is unknown!</red>"
+					.replace("%server%", location.getServer())));
+			return;
+		}
+		Optional<ServerConnection> playerserver = player.getCurrentServer();
+		if(playerserver.isEmpty())
+		{
+			player.sendMessage(ChatApi.tl("<dark_red>Error</dark_red> <white>4</white> <red>- Server where the Player is, is unknown!</red>"));
+			return;
+		}
+		plugin.getServer().getScheduler().buildTask(plugin, (task) ->
+		{
+			CompletableFuture<Result> r = null;
 			if(!player.getCurrentServer().get().getServerInfo().getName().equals(location.getServer()))
 			{
-				Optional<RegisteredServer> server = plugin.getServer().getServer(location.getServer());
-				server.ifPresent((target) -> player.createConnectionRequest(target).connect());
+				r = player.createConnectionRequest(server.get()).connect();
 			}
+			sendPluginMessage(player, server.get(), r, warpName, location, pterc, ptegc);
+			return;
+		}).delay(delay, TimeUnit.MILLISECONDS).schedule();
+	}
+	
+	private void sendPluginMessage(Player player, RegisteredServer server, CompletableFuture<Result> result,
+			String warpName, ServerLocation location, String pterc, String ptegc)
+	{
+		plugin.getServer().getScheduler().buildTask(plugin, (task) ->
+		{
+			if(result != null)
+			{
+				if(result.state() == State.RUNNING)
+				{
+					return;
+				} else if(result.state() == State.CANCELLED || result.state() == State.FAILED)
+				{
+					task.cancel();
+					return;
+				}
+			}
+			task.cancel();
 			ByteArrayOutputStream streamout = new ByteArrayOutputStream();
 	        DataOutputStream out = new DataOutputStream(streamout);
 	        try {
@@ -111,8 +138,7 @@ private PTM plugin;
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-	        plugin.getServer().getServer(location.getServer()).get().sendPluginMessage(StaticValues.WARP_TOSPIGOT, streamout.toByteArray());
-			return;
-		}).delay(delay, TimeUnit.MILLISECONDS).schedule();
+	        server.sendPluginMessage(StaticValues.WARP_TOSPIGOT, streamout.toByteArray());
+		}).repeat(20, TimeUnit.MILLISECONDS).schedule();
 	}
 }

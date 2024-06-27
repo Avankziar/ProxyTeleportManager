@@ -12,6 +12,7 @@ import main.java.me.avankziar.ptm.velocity.assistant.StaticValues;
 import main.java.me.avankziar.ptm.velocity.manager.BackHandler;
 import main.java.me.avankziar.ptm.velocity.manager.HomeHandler;
 import main.java.me.avankziar.ptm.velocity.manager.PortalHandler;
+import main.java.me.avankziar.ptm.velocity.manager.TeleportHandler;
 import main.java.me.avankziar.ptm.velocity.manager.WarpHandler;
 
 public class PluginMessageListener
@@ -46,6 +47,11 @@ public class PluginMessageListener
         	if (event.getIdentifier() == StaticValues.PORTAL_TOBUNGEE) 
             {
         		new PortalHandler(plugin).pluginMessage(event);
+        		return;
+            }
+        	if (event.getIdentifier() == StaticValues.TP_TOBUNGEE) 
+            {
+        		new TeleportHandler(plugin).pluginMessage(event);
         		return;
             }
         	if (event.getIdentifier() == StaticValues.WARP_TOBUNGEE) 

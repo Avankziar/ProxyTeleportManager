@@ -11,6 +11,8 @@ public class StaticValues
 			HOME_TOSPIGOT = MinecraftChannelIdentifier.from("btm:hometospigot"),
 			PORTAL_TOBUNGEE = MinecraftChannelIdentifier.from("btm:portaltobungee"),
 			PORTAL_TOSPIGOT = MinecraftChannelIdentifier.from("btm:portaltospigot"),
+			TP_TOBUNGEE = MinecraftChannelIdentifier.from("btm:teleporttobungee"),
+			TP_TOSPIGOT = MinecraftChannelIdentifier.from("btm:teleporttospigot"),
 			WARP_TOBUNGEE = MinecraftChannelIdentifier.from("btm:warptobungee"),
 			WARP_TOSPIGOT = MinecraftChannelIdentifier.from("btm:warptospigot");
 	 
@@ -75,8 +77,6 @@ public class StaticValues
 		SAVEPOINT_PLAYERTOPOSITION = "savepoint-playertoposition",
 		
 		//Teleport Sending Bungee/Spigot
-		TP_TOBUNGEE = "btm:teleporttobungee",
-		TP_TOSPIGOT = "btm:teleporttospigot",
 		TP_SENDMESSAGE = "tp-sendmessage",
 		TP_SENDTEXTCOMPONENT = "tp-sendtextcomponent",
 		TP_EXISTPENDING = "tp-existpending",

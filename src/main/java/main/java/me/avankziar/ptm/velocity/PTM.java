@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
+import com.velocitypowered.api.event.player.PlayerChooseInitialServerEvent;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.PluginDescription;
@@ -15,7 +16,7 @@ import com.velocitypowered.api.proxy.messages.ChannelRegistrar;
 import main.java.me.avankziar.ptm.velocity.assistant.StaticValues;
 import main.java.me.avankziar.ptm.velocity.listener.PluginMessageListener;
 
-@Plugin(id = "ptm", name = "ProxyTeleportManager", version = "0-0-2",
+@Plugin(id = "ptm", name = "ProxyTeleportManager", version = "0-0-5",
 		url = "https://example.org", description = "Teleportsystem for Velocity and maybe more...", authors = {"Avankziar"})
 public class PTM
 {
@@ -29,7 +30,6 @@ public class PTM
     	PTM.plugin = this;
         this.server = server;
         PTM.logger = logger;
-
     }
     
     @Subscribe
@@ -54,8 +54,22 @@ public class PTM
         cr.register(StaticValues.HOME_TOSPIGOT);
         cr.register(StaticValues.PORTAL_TOBUNGEE);
         cr.register(StaticValues.PORTAL_TOSPIGOT);
+        cr.register(StaticValues.TP_TOBUNGEE);
+        cr.register(StaticValues.TP_TOSPIGOT);
         cr.register(StaticValues.WARP_TOBUNGEE);
         cr.register(StaticValues.WARP_TOSPIGOT);
+    }
+    
+    @Subscribe
+    public void onJoin(PlayerChooseInitialServerEvent event)
+    {
+    	//Join
+    	//event.getPlayer().sendMessage(ChatApi.tl("&eDas ist das &4alte &#ff6c0aBukkit &rFormat."));
+    	//event.getPlayer().sendMessage(ChatApi.tl("<yellow>Das ist das </yellow><color:#b20000>neue</color> <color:#ff6c0a>Bukkit</color> <reset>Format."));
+    	//event.getPlayer().sendMessage(ChatApi.generateOldTextComponentFormat(
+    			//"&aAkzeptieren+✔~click@SUGGEST_COMMAND@/warp+Test1~hover@SHOW_TEXT@&aKlicke+hier+um+die+Teleportanfrage+anzunehmen. &f| &cAblehnen+✖~click@SUGGEST_COMMAND@/home+H1~hover@SHOW_TEXT@&cKlicke+hier+um+die+Teleportanfrage+abzulehnen!"));
+    	//event.getPlayer().sendMessage(ChatApi.generateOldTextComponentFormat(
+    			//"&aTest+nur+mit+click~click@SUGGEST_COMMAND@/warp+Test1"));
     }
     
     public static PTM getPlugin()
