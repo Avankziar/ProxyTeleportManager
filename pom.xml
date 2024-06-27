@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>main.java.me.avankziar</groupId>
 	<artifactId>proxyteleportmanager</artifactId>
-	<version>0-0-5</version>
+	<version>0-0-6</version>
 	<name>ProxyTeleportManager</name>
 	<url>https://github.com/${repository-owner}/${repository-name}.git</url>
     <scm>

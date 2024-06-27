@@ -5,12 +5,30 @@ import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
 public class StaticValues
 {
 	 public static final MinecraftChannelIdentifier 
+	 		GENERAL_TOBUNGEE = MinecraftChannelIdentifier.from("btm:generaltobungee"),
+	 		GENERAL_TOSPIGOT = MinecraftChannelIdentifier.from("btm:generaltospigot"),
 	 		BACK_TOBUNGEE = MinecraftChannelIdentifier.from("btm:backtobungee"),
 			BACK_TOSPIGOT = MinecraftChannelIdentifier.from("btm:backtospigot"),
+			CUSTOM_TOBUNGEE = MinecraftChannelIdentifier.from("btm:customtobungee"),
+			CUSTOM_TOSPIGOT = MinecraftChannelIdentifier.from("btm:customtospigot"),
+			ENTITYTRANSPORT_TOBUNGEE = MinecraftChannelIdentifier.from("btm:entitytransporttobungee"),
+			ENTITYTRANSPORT_TOSPIGOT = MinecraftChannelIdentifier.from("btm:entitytransporttospigot"),
+			FIRSTSPAWN_TOBUNGEE = MinecraftChannelIdentifier.from("btm:firstspawntobungee"),
+			FIRSTSPAWN_TOSPIGOT = MinecraftChannelIdentifier.from("btm:firstspawntospigot"),
 			HOME_TOBUNGEE = MinecraftChannelIdentifier.from("btm:hometobungee"),
 			HOME_TOSPIGOT = MinecraftChannelIdentifier.from("btm:hometospigot"),
+			IFH_TOBUNGEE = MinecraftChannelIdentifier.from("btm:ifhtobungee"),
+			IFH_TOSPIGOT = MinecraftChannelIdentifier.from("btm:ifhtospigot"),
 			PORTAL_TOBUNGEE = MinecraftChannelIdentifier.from("btm:portaltobungee"),
 			PORTAL_TOSPIGOT = MinecraftChannelIdentifier.from("btm:portaltospigot"),
+			RANDOMTELEPORT_TOBUNGEE = MinecraftChannelIdentifier.from("btm:randomteleporttobungee"),
+			RANDOMTELEPORT_TOSPIGOT = MinecraftChannelIdentifier.from("btm:randomteleporttospigot"),
+			RESPAWN_TOBUNGEE = MinecraftChannelIdentifier.from("btm:respawntobungee"),
+			RESPAWN_TOSPIGOT = MinecraftChannelIdentifier.from("btm:respawntospigot"),
+			SAFE_TOBUNGEE = MinecraftChannelIdentifier.from("btm:safetobungee"),
+			SAFE_TOSPIGOT = MinecraftChannelIdentifier.from("btm:safetospigot"),
+			SAVEPOINT_TOBUNGEE = MinecraftChannelIdentifier.from("btm:savepointtobungee"),
+			SAVEPOINT_TOSPIGOT = MinecraftChannelIdentifier.from("btm:savepointtospigot"),
 			TP_TOBUNGEE = MinecraftChannelIdentifier.from("btm:teleporttobungee"),
 			TP_TOSPIGOT = MinecraftChannelIdentifier.from("btm:teleporttospigot"),
 			WARP_TOBUNGEE = MinecraftChannelIdentifier.from("btm:warptobungee"),
@@ -18,17 +36,19 @@ public class StaticValues
 	 
 	 final public static String
 		//General
-		GENERAL_TOBUNGEE = "btm:generaltobungee",
-		GENERAL_TOSPIGOT = "btm:generaltospigot",
+		GENERAL_TOBUNGEE_ = "btm:generaltobungee",
+		GENERAL_TOSPIGOT_ = "btm:generaltospigot",
 		GENERAL_SENDLIST = "general-sendlist",
 		GENERAL_SENDSETTING = "general-sendsetting",
 		//Custom
-		CUSTOM_TOBUNGEE = "btm:customtobungee",
-		CUSTOM_TOSPIGOT = "btm:customtospigot",
+		CUSTOM_TOBUNGEE_ = "btm:customtobungee",
+		CUSTOM_TOSPIGOT_ = "btm:customtospigot",
 		CUSTOM_PLAYERTOPLAYER = "custom-playertoplayer",
 		CUSTOM_PLAYERTOPOSITION = "custom-playertoposition",
 		
 		//Back Sending
+		BACK_TOBUNGEE_ = "btm:backtobungee",
+		BACK_TOSPIGOT_ = "btm:backtospigot",
 		BACK_SENDOBJECT = "back-object",
 		BACK_SENDDEATHOBJECT = "back-deathobject",
 		BACK_SENDJOINOBJECT = "back-joinobject",
@@ -37,46 +57,53 @@ public class StaticValues
 		BACK_REQUESTNEWBACK = "back-requestnewback",
 		BACK_NODEATHBACK = "back-nodeathback",
 		
-		ENTITYTRANSPORT_TOBUNGEE = "btm:entitytransporttobungee",
-		ENTITYTRANSPORT_TOSPIGOT = "btm:entitytransporttospigot",
+		//EntityTransport
+		ENTITYTRANSPORT_TOBUNGEE_ = "btm:entitytransporttobungee",
+		ENTITYTRANSPORT_TOSPIGOT_ = "btm:entitytransporttospigot",
 		ENTITYTRANSPORT_ENTITYTOPOSITION = "entitytransport-entitytoposition",
 		ENTITYTRANSPORT_ENTITYTOPLAYER = "entitytransport-entitytoplayer",
 		
 		//FirstSpawn Sending
-		FIRSTSPAWN_TOBUNGEE = "btm:firstspawntobungee",
-		FIRSTSPAWN_TOSPIGOT = "btm:firstspawntospigot",
+		FIRSTSPAWN_TOBUNGEE_ = "btm:firstspawntobungee",
+		FIRSTSPAWN_TOSPIGOT_ = "btm:firstspawntospigot",
 		FIRSTSPAWN_PLAYERTOPOSITION = "firstspawn-playertoposition",
 		FIRSTSPAWN_DOCOMMANDS = "firstspawn-docommands",
 		
 		//Home Sending
+		HOME_TOBUNGEE_ = "btm:hometobungee",
+		HOME_TOSPIGOT_ = "btm:hometospigot",
 		HOME_PLAYERTOPOSITION = "home-playertoposition",
 		
 		//IFH
-		IFH_TOBUNGEE = "btm:ifhtobungee",
-		IFH_TOSPIGOT = "btm:ifhtospigot",
+		IFH_TOBUNGEE_ = "btm:ifhtobungee",
+		IFH_TOSPIGOT_ = "btm:ifhtospigot",
 		IFH_PLAYERTOPOSITION = "ifh-playertoposition",
 		
 		//PORTAL Sending
+		PORTAL_TOBUNGEE_ = "btm:portaltobungee",
+		PORTAL_TOSPIGOT_ = "btm:portaltospigot",
 		PORTAL_PLAYERTOPOSITION = "portal-playertoposition",
 		PORTAL_SOUND = "portal-sound",
 		PORTAL_UPDATE = "portal-update",
 		
 		//RandomTeleport
-		RANDOMTELEPORT_TOBUNGEE = "btm:randomteleporttobungee",
-		RANDOMTELEPORT_TOSPIGOT = "btm:randomteleporttospigot",
+		RANDOMTELEPORT_TOBUNGEE_ = "btm:randomteleporttobungee",
+		RANDOMTELEPORT_TOSPIGOT_ = "btm:randomteleporttospigot",
 		RANDOMTELEPORT_PLAYERTOPOSITION = "randomteleport-playertoposition",
 		
 		//WARP Sending
-		RESPAWN_TOBUNGEE = "btm:respawntobungee",
-		RESPAWN_TOSPIGOT = "btm:respawntospigot",
+		RESPAWN_TOBUNGEE_ = "btm:respawntobungee",
+		RESPAWN_TOSPIGOT_ = "btm:respawntospigot",
 		RESPAWN_PLAYERTOPOSITION = "respawn-playertoposition",
 		
 		//SavePoint Sending
-		SAVEPOINT_TOBUNGEE = "btm:savepointtobungee",
-		SAVEPOINT_TOSPIGOT = "btm:savepointtospigot",
+		SAVEPOINT_TOBUNGEE_ = "btm:savepointtobungee",
+		SAVEPOINT_TOSPIGOT_ = "btm:savepointtospigot",
 		SAVEPOINT_PLAYERTOPOSITION = "savepoint-playertoposition",
 		
 		//Teleport Sending Bungee/Spigot
+		TP_TOBUNGEE_ = "btm:teleporttobungee",
+		TP_TOSPIGOT_ = "btm:teleporttospigot",
 		TP_SENDMESSAGE = "tp-sendmessage",
 		TP_SENDTEXTCOMPONENT = "tp-sendtextcomponent",
 		TP_EXISTPENDING = "tp-existpending",
@@ -101,11 +128,13 @@ public class StaticValues
 		TP_TOGGLED = "tp-toggled",
 		
 		//WARP Sending
+		WARP_TOBUNGEE_ = "btm:warptobungee",
+		WARP_TOSPIGOT_ = "btm:warptospigot",
 		WARP_PLAYERTOPOSITION = "warp-playertoposition",
 		
 		//SAFE Location Sending
-		SAFE_TOBUNGEE = "btm:safetobungee",
-		SAFE_TOSPIGOT = "btm:safetospigot",
+		SAFE_TOBUNGEE_ = "btm:safetobungee",
+		SAFE_TOSPIGOT_ = "btm:safetospigot",
 		SAFE_CHECKPATH = "safe-checkpath",
 		SAFE_CHECKEDPATH = "safe-checkedpath"
 		;

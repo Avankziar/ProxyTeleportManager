@@ -1,3 +1,15 @@
+Build 0-0-6
+- Tp/Tpa Message Formate fixed
+- Custom Mechanic Velocity response implemented and up to standart like Back/Home etc.
+- EntryTransport Mechanic Velocity response implemented and up to standart like Back/Home etc.
+- FirstSpawn Mechanic Velocity response implemented and up to standart like Back/Home etc.
+- IFH SubMechanic Velocity response implemented and up to standart like Back/Home etc.
+- RandomTeleport Mechanic Velocity response implemented and up to standart like Back/Home etc.
+- Respawn Mechanic Velocity response implemented and up to standart like Back/Home etc.
+- Safe SubMechanic Velocity response implemented and up to standart like Back/Home etc.
+- SavePoint Mechanic Velocity response implemented and up to standart like Back/Home etc.
+
+
 Build 0-0-5
 - pom.xml fixed
 - Back, Home, Portal, Tp/Tpa & Warp Mechanic for Velocity Handling streamlined.

@@ -69,7 +69,7 @@ public class TeleportHandler
 	        	Optional<Player> to = plugin.getServer().getPlayer(toName);
 	        	if(to.isEmpty())
 	        	{
-	        		from.get().sendMessage(ChatApi.text(error));
+	        		from.get().sendMessage(ChatApi.tl(error));
 	        		return;
 	        	}
 	        	Player t = to.get();
@@ -173,11 +173,11 @@ public class TeleportHandler
 	        	{
 	        		if(returns)
 	        		{
-	        			plugin.getServer().getPlayer(fromName).ifPresent(y -> y.sendMessage(ChatApi.text(returnmessage)));
+	        			plugin.getServer().getPlayer(fromName).ifPresent(y -> y.sendMessage(ChatApi.tl(returnmessage)));
 	        		}
 	        		return;
 	        	}
-	        	plugin.getServer().getPlayer(toName).ifPresent(y -> y.sendMessage(ChatApi.text(message)));
+	        	plugin.getServer().getPlayer(toName).ifPresent(y -> y.sendMessage(ChatApi.tl(message)));
 	        	return;
 	        } else if(task.equals(StaticValues.TP_SENDTEXTCOMPONENT))
 	        {
@@ -226,11 +226,11 @@ public class TeleportHandler
         	        	{
         	        		if(plugin.getServer().getPlayer(fromName) != null)
         	        		{
-        	        			plugin.getServer().getPlayer(fromName).ifPresent(y -> y.sendMessage(ChatApi.text(messageFrom)));
+        	        			plugin.getServer().getPlayer(fromName).ifPresent(y -> y.sendMessage(ChatApi.tl(messageFrom)));
         	        		}
         	        		if(plugin.getServer().getPlayer(toName) != null)
         	        		{
-        	        			plugin.getServer().getPlayer(toName).ifPresent(y -> y.sendMessage(ChatApi.text(messageTo)));
+        	        			plugin.getServer().getPlayer(toName).ifPresent(y -> y.sendMessage(ChatApi.tl(messageTo)));
         	        		}
         	            	
         	        	}
@@ -257,13 +257,13 @@ public class TeleportHandler
 	        	{
 	        		if(sendMessage)
 	        		{
-	        			plugin.getServer().getPlayer(toName).ifPresent(y -> y.sendMessage(ChatApi.text(errormessage)));
+	        			plugin.getServer().getPlayer(toName).ifPresent(y -> y.sendMessage(ChatApi.tl(errormessage)));
 	        			return;
 	        		}
 	        	}
 	        	TeleportHandler.getPendingTeleports().remove(fromName);
-	    		plugin.getServer().getPlayer(fromName).ifPresent(y -> y.sendMessage(ChatApi.text(message)));
-	    		plugin.getServer().getPlayer(toName).ifPresent(y -> y.sendMessage(ChatApi.text(message)));
+	    		plugin.getServer().getPlayer(fromName).ifPresent(y -> y.sendMessage(ChatApi.tl(message)));
+	    		plugin.getServer().getPlayer(toName).ifPresent(y -> y.sendMessage(ChatApi.tl(message)));
 	        	return;
 	        } else if(task.equals(StaticValues.TP_CANCEL))
 	        {
@@ -275,7 +275,7 @@ public class TeleportHandler
 	        	{
 	        		if(sendMessage)
 	        		{
-	        			plugin.getServer().getPlayer(fromName).ifPresent(y -> y.sendMessage(ChatApi.text(errormessage)));
+	        			plugin.getServer().getPlayer(fromName).ifPresent(y -> y.sendMessage(ChatApi.tl(errormessage)));
 	        			return;
 	        		}
 	        	}
@@ -284,8 +284,8 @@ public class TeleportHandler
 	        	TeleportHandler.getPendingTeleports().remove(
 	        			TeleportHandler.getPendingTeleportValueToName(fromName));
 	        	String messages = message.replace("%fromplayer%", fromName).replace("%toplayer%", toName);
-	    		plugin.getServer().getPlayer(fromName).ifPresent(y -> y.sendMessage(ChatApi.text(messages)));
-	    		plugin.getServer().getPlayer(toName).ifPresent(y -> y.sendMessage(ChatApi.text(messages)));
+	    		plugin.getServer().getPlayer(fromName).ifPresent(y -> y.sendMessage(ChatApi.tl(messages)));
+	    		plugin.getServer().getPlayer(toName).ifPresent(y -> y.sendMessage(ChatApi.tl(messages)));
 	        	return;
 	        } else if(task.equals(StaticValues.TP_FORCE))
 	        {
@@ -483,7 +483,7 @@ public class TeleportHandler
 				{
 					return;
 				}
-				to.ifPresent(y -> y.sendMessage(ChatApi.text(errormessage)));
+				to.ifPresent(y -> y.sendMessage(ChatApi.tl(errormessage)));
 				return;
 			}
 			Optional<Player> ofrom = plugin.getServer().getPlayer(fn);
@@ -494,18 +494,18 @@ public class TeleportHandler
 			}
 			if(oto.isEmpty())
 			{
-				ofrom.ifPresent(y -> y.sendMessage(ChatApi.text(errormessage)));
+				ofrom.ifPresent(y -> y.sendMessage(ChatApi.tl(errormessage)));
 				return;
 			}
 			if(!getPendingTeleports().containsKey(fromName))
 	    	{
-				oto.ifPresent(y -> y.sendMessage(ChatApi.text(errormessage)));
+				oto.ifPresent(y -> y.sendMessage(ChatApi.tl(errormessage)));
 				return;
 	    	}
 			final Teleport teleport = pendingTeleports.get(fromName);
 			if(!teleport.getToName().equals(toName))
 			{
-				oto.ifPresent(y -> y.sendMessage(ChatApi.text(errormessage)));
+				oto.ifPresent(y -> y.sendMessage(ChatApi.tl(errormessage)));
 				return;
 			}
 			getPendingTeleports().remove(fromName);
@@ -528,14 +528,14 @@ public class TeleportHandler
 			}
 			if(!getPendingTeleports().containsKey(fromName))
 	    	{
-				ofrom.ifPresent(y -> y.sendMessage(ChatApi.text(errormessage)));
+				ofrom.ifPresent(y -> y.sendMessage(ChatApi.tl(errormessage)));
 				return;
 	    	}
 			Teleport teleport = pendingTeleports.get(fromName);
 			Optional<Player> oto = plugin.getServer().getPlayer(teleport.getToName());
 			if(oto.isEmpty())
 			{
-				ofrom.ifPresent(y -> y.sendMessage(ChatApi.text(errormessage)));
+				ofrom.ifPresent(y -> y.sendMessage(ChatApi.tl(errormessage)));
 				return;
 			}
 			getPendingTeleports().remove(fromName);
@@ -559,20 +559,20 @@ public class TeleportHandler
 			}
 			if(oto.isEmpty())
 			{
-				ofrom.ifPresent(y -> y.sendMessage(ChatApi.text(errormessage)));
+				ofrom.ifPresent(y -> y.sendMessage(ChatApi.tl(errormessage)));
 				return;
 			}
 			Player from = ofrom.get(); //Player witch execute the /tpa
 			Player to = oto.get();
 			if(!getPendingTeleports().containsKey(fromName))
 	    	{
-				to.sendMessage(ChatApi.text(errormessage));
+				to.sendMessage(ChatApi.tl(errormessage));
 				return;
 	    	}
 			Teleport teleport = pendingTeleports.get(fromName);
 			if(!teleport.getToName().equals(toName))
 			{
-				to.sendMessage(ChatApi.text(errormessage));
+				to.sendMessage(ChatApi.tl(errormessage));
 				return;
 			}
 			getPendingTeleports().remove(fromName);
@@ -597,7 +597,7 @@ public class TeleportHandler
 		}
 		if(oto == null)
 		{
-			ofrom.ifPresent(y -> y.sendMessage(ChatApi.text(errormessage)));
+			ofrom.ifPresent(y -> y.sendMessage(ChatApi.tl(errormessage)));
 			return;
 		}
 		Player from = ofrom.get();
@@ -621,7 +621,7 @@ public class TeleportHandler
 		}
 		if(otarget.isEmpty())
 		{
-			osender.get().sendMessage(ChatApi.text(errormessage));
+			osender.get().sendMessage(ChatApi.tl(errormessage));
 			return;
 		}
 		Player sender = osender.get();
@@ -632,11 +632,36 @@ public class TeleportHandler
 			{
 				return;
 			}
+			CompletableFuture<Result> result = null;
 			if(!sender.getCurrentServer().get().getServerInfo().getName().equals(target.getCurrentServer().get().getServerInfo().getName()))
 			{
 				Optional<ServerConnection> server = target.getCurrentServer();
-				server.ifPresent((t) -> sender.createConnectionRequest(t.getServer()).connect());
+				if(server.isEmpty())
+				{
+					return;
+				}
+				result = sender.createConnectionRequest(server.get().getServer()).connect();
 			}
+			sendPluginMessageSilent(sender, target, result);
+		}).delay(1, TimeUnit.MILLISECONDS).schedule();
+	}
+	
+	private void sendPluginMessageSilent(Player sender, Player target, CompletableFuture<Result> result)
+	{
+		plugin.getServer().getScheduler().buildTask(plugin, (task) ->
+		{
+			if(result != null)
+			{
+				if(result.state() == State.RUNNING)
+				{
+					return;
+				} else if(result.state() == State.CANCELLED || result.state() == State.FAILED)
+				{
+					task.cancel();
+					return;
+				}
+			}
+			task.cancel();
 			ByteArrayOutputStream streamout = new ByteArrayOutputStream();
 	        DataOutputStream out = new DataOutputStream(streamout);
 	        try {
@@ -647,7 +672,7 @@ public class TeleportHandler
 				e.printStackTrace();
 			}
 		    target.getCurrentServer().ifPresent(y -> y.sendPluginMessage(StaticValues.TP_TOSPIGOT, streamout.toByteArray()));
-		}).delay(1, TimeUnit.MILLISECONDS).schedule();
+		}).repeat(20, TimeUnit.MILLISECONDS).schedule();
 	}
 	
 	public void preTeleportAllPlayerToOnePlayer(String fromName, int delay, Object... objects)
@@ -689,14 +714,15 @@ public class TeleportHandler
 	
 	public void teleportPlayerToPosition(String playerName, ServerLocation location, String errorServerNotFound, int delay)
 	{
-		Player player = plugin.getServer().getPlayer(playerName).get();
-		if(player == null)
+		Optional<Player> opplayer = plugin.getServer().getPlayer(playerName);
+		if(opplayer.isEmpty())
 		{
 			return;
 		}
+		Player player = plugin.getServer().getPlayer(playerName).get();
 		if(plugin.getServer().getServer(location.getServer()).isEmpty())
 		{
-			player.sendMessage(ChatApi.text(errorServerNotFound));
+			player.sendMessage(ChatApi.tl(errorServerNotFound));
 			return;
 		}
 		teleportPlayerToPositionPost(player, location, delay);
@@ -704,30 +730,50 @@ public class TeleportHandler
 	
 	public void teleportPlayerToPositionPost(Player player, ServerLocation location, int delay)
 	{
-		if(player == null || location == null)
-		{
-			return;
-		}
-		if(!PluginMessageListener.containsServer(location.getServer()))
-		{
-			player.sendMessage(ChatApi.text("Server %server% is unknown!".replace("%server%", location.getServer())));
-			return;
-		}
-		if(!player.getCurrentServer().get().getServerInfo().getName().equals(location.getServer()))
-		{
-			Optional<RegisteredServer> server = plugin.getServer().getServer(location.getServer());
-			server.ifPresent((target) -> player.createConnectionRequest(target).connect());
-		}
 		plugin.getServer().getScheduler().buildTask(plugin, () ->
 		{
 			if(player == null || location == null)
 			{
 				return;
 			}
-			if(location.getServer() == null)
+			if(!PluginMessageListener.containsServer(location.getServer()))
 			{
+				player.sendMessage(ChatApi.tl("<dark_red>Error</dark_red> <white>1</white> <red>- Server %server% is unknown!</red>"
+						.replace("%server%", location.getServer())));
 				return;
 			}
+			Optional<RegisteredServer> server = plugin.getServer().getServer(location.getServer());
+			if(server.isEmpty())
+			{
+				player.sendMessage(ChatApi.tl("<dark_red>Error</dark_red> <white>2</white> <red>- Server %server% is unknown!</red>"
+						.replace("%server%", location.getServer())));
+				return;
+			}
+			CompletableFuture<Result> r = null;
+			if(!player.getCurrentServer().get().getServerInfo().getName().equals(location.getServer()))
+			{
+				r = player.createConnectionRequest(server.get()).connect();
+			}
+			sendPluginMessagePosition(player, server.get(), location, r);
+		}).delay(delay, TimeUnit.MILLISECONDS).schedule();
+	}
+	
+	private void sendPluginMessagePosition(Player player, RegisteredServer server, ServerLocation location, CompletableFuture<Result> result)
+	{
+		plugin.getServer().getScheduler().buildTask(plugin, (task) ->
+		{
+			if(result != null)
+			{
+				if(result.state() == State.RUNNING)
+				{
+					return;
+				} else if(result.state() == State.CANCELLED || result.state() == State.FAILED)
+				{
+					task.cancel();
+					return;
+				}
+			}
+			task.cancel();
 			ByteArrayOutputStream streamout = new ByteArrayOutputStream();
 	        DataOutputStream out = new DataOutputStream(streamout);
 	        try {
@@ -743,7 +789,7 @@ public class TeleportHandler
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-	        plugin.getServer().getServer(location.getServer()).ifPresent(y -> y.sendPluginMessage(StaticValues.TP_TOSPIGOT, streamout.toByteArray()));
-		}).delay(delay, TimeUnit.MILLISECONDS).schedule();
+	        server.sendPluginMessage(StaticValues.TP_TOSPIGOT, streamout.toByteArray());
+		}).repeat(20, TimeUnit.MILLISECONDS).schedule();
 	}
 }

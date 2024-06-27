@@ -16,7 +16,7 @@ import com.velocitypowered.api.proxy.messages.ChannelRegistrar;
 import main.java.me.avankziar.ptm.velocity.assistant.StaticValues;
 import main.java.me.avankziar.ptm.velocity.listener.PluginMessageListener;
 
-@Plugin(id = "ptm", name = "ProxyTeleportManager", version = "0-0-5",
+@Plugin(id = "ptm", name = "ProxyTeleportManager", version = "0-0-6",
 		url = "https://example.org", description = "Teleportsystem for Velocity and maybe more...", authors = {"Avankziar"})
 public class PTM
 {
@@ -48,12 +48,30 @@ public class PTM
 		logger.info(" ╚═╝        ╚═╝   ╚═╝     ╚═╝ | Have Fun^^");
     	server.getEventManager().register(plugin, new PluginMessageListener(plugin));
     	ChannelRegistrar cr = server.getChannelRegistrar();
+    	cr.register(StaticValues.GENERAL_TOBUNGEE);
+        cr.register(StaticValues.GENERAL_TOSPIGOT);
         cr.register(StaticValues.BACK_TOBUNGEE);
         cr.register(StaticValues.BACK_TOSPIGOT);
+        cr.register(StaticValues.CUSTOM_TOBUNGEE);
+        cr.register(StaticValues.CUSTOM_TOSPIGOT);
+        cr.register(StaticValues.ENTITYTRANSPORT_TOBUNGEE);
+        cr.register(StaticValues.ENTITYTRANSPORT_TOSPIGOT);
+        cr.register(StaticValues.FIRSTSPAWN_TOBUNGEE);
+        cr.register(StaticValues.FIRSTSPAWN_TOSPIGOT);
         cr.register(StaticValues.HOME_TOBUNGEE);
         cr.register(StaticValues.HOME_TOSPIGOT);
+        cr.register(StaticValues.IFH_TOBUNGEE);
+        cr.register(StaticValues.IFH_TOSPIGOT);
         cr.register(StaticValues.PORTAL_TOBUNGEE);
         cr.register(StaticValues.PORTAL_TOSPIGOT);
+        cr.register(StaticValues.RANDOMTELEPORT_TOBUNGEE);
+        cr.register(StaticValues.RANDOMTELEPORT_TOSPIGOT);
+        cr.register(StaticValues.RESPAWN_TOBUNGEE);
+        cr.register(StaticValues.RESPAWN_TOSPIGOT);
+        cr.register(StaticValues.SAFE_TOBUNGEE);
+        cr.register(StaticValues.SAFE_TOSPIGOT);
+        cr.register(StaticValues.SAVEPOINT_TOBUNGEE);
+        cr.register(StaticValues.SAVEPOINT_TOSPIGOT);
         cr.register(StaticValues.TP_TOBUNGEE);
         cr.register(StaticValues.TP_TOSPIGOT);
         cr.register(StaticValues.WARP_TOBUNGEE);

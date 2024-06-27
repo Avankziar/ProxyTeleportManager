@@ -10,8 +10,16 @@ import com.velocitypowered.api.proxy.server.RegisteredServer;
 import main.java.me.avankziar.ptm.velocity.PTM;
 import main.java.me.avankziar.ptm.velocity.assistant.StaticValues;
 import main.java.me.avankziar.ptm.velocity.manager.BackHandler;
+import main.java.me.avankziar.ptm.velocity.manager.CustomHandler;
+import main.java.me.avankziar.ptm.velocity.manager.EntityTransportHandler;
+import main.java.me.avankziar.ptm.velocity.manager.FirstSpawnHandler;
 import main.java.me.avankziar.ptm.velocity.manager.HomeHandler;
+import main.java.me.avankziar.ptm.velocity.manager.IFHHandler;
 import main.java.me.avankziar.ptm.velocity.manager.PortalHandler;
+import main.java.me.avankziar.ptm.velocity.manager.RandomTeleportHandler;
+import main.java.me.avankziar.ptm.velocity.manager.RespawnHandler;
+import main.java.me.avankziar.ptm.velocity.manager.SafeHandler;
+import main.java.me.avankziar.ptm.velocity.manager.SavePointHandler;
 import main.java.me.avankziar.ptm.velocity.manager.TeleportHandler;
 import main.java.me.avankziar.ptm.velocity.manager.WarpHandler;
 
@@ -34,31 +42,36 @@ public class PluginMessageListener
         //ServerConnection backend = (ServerConnection) event.getSource(); At the Moment not needed
         try
 		{
-        	if(event.getIdentifier() == StaticValues.BACK_TOBUNGEE) 
-            {
-            	new BackHandler(plugin).pluginMessage(event);
-            	return;
-            }
-        	if (event.getIdentifier() == StaticValues.HOME_TOBUNGEE) 
-            {
-        		new HomeHandler(plugin).pluginMessage(event);
-                return;
-            }
-        	if (event.getIdentifier() == StaticValues.PORTAL_TOBUNGEE) 
-            {
-        		new PortalHandler(plugin).pluginMessage(event);
-        		return;
-            }
-        	if (event.getIdentifier() == StaticValues.TP_TOBUNGEE) 
-            {
-        		new TeleportHandler(plugin).pluginMessage(event);
-        		return;
-            }
-        	if (event.getIdentifier() == StaticValues.WARP_TOBUNGEE) 
-            {
-        		new WarpHandler(plugin).pluginMessage(event);
-        		return;
-            }
+        	switch(event.getIdentifier().getId())
+        	{
+        	case StaticValues.GENERAL_TOBUNGEE_:
+        	case StaticValues.BACK_TOBUNGEE_:
+        		new BackHandler(plugin).pluginMessage(event); return;
+        	case StaticValues.CUSTOM_TOBUNGEE_:
+        		new CustomHandler(plugin).pluginMessage(event);	return;
+        	case StaticValues.ENTITYTRANSPORT_TOBUNGEE_:
+        		new EntityTransportHandler(plugin).pluginMessage(event); return;
+        	case StaticValues.FIRSTSPAWN_TOBUNGEE_:
+        		new FirstSpawnHandler(plugin).pluginMessage(event); return;
+        	case StaticValues.HOME_TOBUNGEE_:
+        		new HomeHandler(plugin).pluginMessage(event); return;
+        	case StaticValues.IFH_TOBUNGEE_:
+        		new IFHHandler(plugin).pluginMessage(event); return;
+        	case StaticValues.PORTAL_TOBUNGEE_:
+        		new PortalHandler(plugin).pluginMessage(event); return;
+        	case StaticValues.RANDOMTELEPORT_TOBUNGEE_:
+        		new RandomTeleportHandler(plugin).pluginMessage(event); return;
+        	case StaticValues.RESPAWN_TOBUNGEE_:
+        		new RespawnHandler(plugin).pluginMessage(event); return;
+        	case StaticValues.SAFE_TOBUNGEE_:
+        		new SafeHandler(plugin).pluginMessage(event); return;
+        	case StaticValues.SAVEPOINT_TOBUNGEE_:
+        		new SavePointHandler(plugin).pluginMessage(event); return;
+        	case StaticValues.TP_TOBUNGEE_:
+        		new TeleportHandler(plugin).pluginMessage(event); return;
+        	case StaticValues.WARP_TOBUNGEE_:
+        		new WarpHandler(plugin).pluginMessage(event); return;
+        	}
 		} catch (IOException e)
 		{
 			e.printStackTrace();
