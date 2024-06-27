@@ -1,7 +1,13 @@
 Build 0-0-5
-- Home Mechanic 
+- Back, Home, Portal, Tp/Tpa & Warp Mechanic for Velocity Handling streamlined.
+  This means that all teleports of these mechanics now run completely error-free and always take the player reliably to the desired location.
+  All delays that now occur are due to the velocity proxy itself,
+  as the code cannot run any more tightly, otherwise double teleports per request would creep in. 
+  Bedeutet, dass nun alle Teleports dieser Mechaniken nun komplett fehlerfrei durchlaufen und den Spieler auch immer zuverlässig an den gewünschten ort bringen.
+  Alle nun jetzt auftretenden Verzögerungen, sind dem Velocity Proxy selber geschuldet,
+  da der Code so nicht noch enger ablaufen kann, da sich sonst doppelte Teleporte pro Anfrage einschleichen.
 Build 0-0-4
-- Tp and TpA Mechanic Velocity respnse implemented
+- Tp and TpA Mechanic Velocity response implemented
 - Rudimentary ChatApi added
 Build 0-0-3
 - Portal Mechanic Velocity response implemented

@@ -9,11 +9,14 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.Future.State;
 
 import com.velocitypowered.api.event.connection.PluginMessageEvent;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ServerConnection;
+import com.velocitypowered.api.proxy.ConnectionRequestBuilder.Result;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 
 import main.java.me.avankziar.ptm.velocity.PTM;
@@ -51,15 +54,30 @@ public class TeleportHandler
 	        	boolean bypass = in.readBoolean();
 	        	String error = in.readUTF();
 	        	BackHandler.getBack(in, uuid, playername, Mechanics.TPA);
-	        	if(plugin.getServer().getPlayer(toName).isEmpty())
+	        	
+	        	Optional<Player> from = plugin.getServer().getPlayer(fromName);
+	        	if(from.isEmpty())
 	        	{
-	        		Optional<Player> opp = plugin.getServer().getPlayer(fromName);
-	        		if(!opp.isEmpty())
-	        		{
-	        			opp.ifPresent(y -> y.sendMessage(ChatApi.text(error)));
-	        		}
 	        		return;
 	        	}
+	        	Player f = from.get();
+	        	if(f.getCurrentServer().isEmpty())
+	        	{
+	        		return;
+	        	}
+	        	ServerConnection fsc = f.getCurrentServer().get();
+	        	Optional<Player> to = plugin.getServer().getPlayer(toName);
+	        	if(to.isEmpty())
+	        	{
+	        		from.get().sendMessage(ChatApi.text(error));
+	        		return;
+	        	}
+	        	Player t = to.get();
+	        	if(t.getCurrentServer().isEmpty())
+	        	{
+	        		return;
+	        	}
+	        	ServerConnection tsc = t.getCurrentServer().get();
 	        	if(BackHandler.getBackLocations().get(toName) != null)
 	        	{
 	        		if(BackHandler.getBackLocations().get(toName).isToggle()
@@ -73,8 +91,7 @@ public class TeleportHandler
 	    				} catch (IOException e) {
 	    					e.printStackTrace();
 	    				}
-	    		        plugin.getServer().getPlayer(fromName).get().getCurrentServer()
-	    		        .ifPresent(y -> y.sendPluginMessage(StaticValues.TP_TOSPIGOT, streamout.toByteArray()));
+	    		        fsc.sendPluginMessage(StaticValues.TP_TOSPIGOT, streamout.toByteArray());
 	    		        return;
 	        		}
 	        	}
@@ -89,14 +106,11 @@ public class TeleportHandler
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-			        plugin.getServer().getPlayer(fromName).get().getCurrentServer()
-    		        .ifPresent(y -> y.sendPluginMessage(StaticValues.TP_TOSPIGOT, streamout.toByteArray()));
+			       fsc.sendPluginMessage(StaticValues.TP_TOSPIGOT, streamout.toByteArray());
 	        	} else
 	        	{
-	        		if(ForbiddenHandlerBungee.getValues(true, Mechanics.TPA_ONLY).contains(
-	        				plugin.getServer().getPlayer(fromName).get().getCurrentServer().get().getServerInfo().getName())
-	        				|| ForbiddenHandlerBungee.getValues(true, Mechanics.TPA_ONLY).contains(
-	                				plugin.getServer().getPlayer(toName).get().getCurrentServer().get().getServerInfo().getName()))
+	        		if(ForbiddenHandlerBungee.getValues(true, Mechanics.TPA_ONLY).contains(fsc.getServerInfo().getName())
+	        				|| ForbiddenHandlerBungee.getValues(true, Mechanics.TPA_ONLY).contains(tsc.getServerInfo().getName()))
 	        		{
 	        			ByteArrayOutputStream streamout = new ByteArrayOutputStream();
 	    		        DataOutputStream out = new DataOutputStream(streamout);
@@ -106,11 +120,9 @@ public class TeleportHandler
 	    				} catch (IOException e) {
 	    					e.printStackTrace();
 	    				}
-	    		        plugin.getServer().getPlayer(fromName).get().getCurrentServer()
-	    		        .ifPresent(y -> y.sendPluginMessage(StaticValues.TP_TOSPIGOT, streamout.toByteArray()));
+	    		        fsc.sendPluginMessage(StaticValues.TP_TOSPIGOT, streamout.toByteArray());
 	    			    return;
 	        		}
-	        		
 	        		if(ForbiddenHandlerBungee.getValues(false, Mechanics.TPA_ONLY).contains(
 	        				TeleportHandler.getPlayerWorld().get(fromName))
 	        				|| ForbiddenHandlerBungee.getValues(false, Mechanics.TPA_ONLY).contains(
@@ -124,8 +136,7 @@ public class TeleportHandler
 	    				} catch (IOException e) {
 	    					e.printStackTrace();
 	    				}
-	    		        plugin.getServer().getPlayer(fromName).get().getCurrentServer()
-	    		        .ifPresent(y -> y.sendPluginMessage(StaticValues.TP_TOSPIGOT, streamout.toByteArray()));
+	    		        fsc.sendPluginMessage(StaticValues.TP_TOSPIGOT, streamout.toByteArray());
 	    			    return;
 	        		}
 	        		boolean isToggled = false;
@@ -148,8 +159,7 @@ public class TeleportHandler
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-			        plugin.getServer().getPlayer(fromName).get().getCurrentServer()
-    		        .ifPresent(y -> y.sendPluginMessage(StaticValues.TP_TOSPIGOT, streamout.toByteArray()));
+			        fsc.sendPluginMessage(StaticValues.TP_TOSPIGOT, streamout.toByteArray());
 	        	}
 	        	return;
 	        } else if(task.equals(StaticValues.TP_SENDMESSAGE))
@@ -180,7 +190,7 @@ public class TeleportHandler
 	        	{
 	        		if(returns)
 	        		{
-	        			plugin.getServer().getPlayer(fromName).ifPresent(y -> y.sendMessage(ChatApi.text(returnmessage)));
+	        			plugin.getServer().getPlayer(fromName).ifPresent(y -> y.sendMessage(ChatApi.tl(returnmessage)));
 	        		}
 	        		return;
 	        	}
@@ -394,21 +404,46 @@ public class TeleportHandler
 	
 	public void teleportPlayer(Player sender, Player target, int delay)
 	{
-		if(sender == null || target == null)
-		{
-			return;
-		}
 		plugin.getServer().getScheduler().buildTask(plugin, () ->
 		{
-			if(sender == null || target == null)
+			if(sender == null || (sender != null && !sender.isActive()))
 			{
 				return;
 			}
+			if(target == null || (target != null && !target.isActive()))
+			{
+				return;
+			}
+			CompletableFuture<Result> r = null;
 			if(!sender.getCurrentServer().get().getServerInfo().getName().equals(target.getCurrentServer().get().getServerInfo().getName()))
 			{
 				Optional<ServerConnection> server = target.getCurrentServer();
-				server.ifPresent((t) -> sender.createConnectionRequest(t.getServer()).connect());
+				if(server.isEmpty())
+				{
+					return;
+				}
+				r = sender.createConnectionRequest(server.get().getServer()).connect();
 			}
+			sendPluginMessage(sender, target, r);
+		}).delay(delay, TimeUnit.MILLISECONDS).schedule();
+	}
+	
+	private void sendPluginMessage(Player sender, Player target, CompletableFuture<Result> result)
+	{
+		plugin.getServer().getScheduler().buildTask(plugin, (task) ->
+		{
+			if(result != null)
+			{
+				if(result.state() == State.RUNNING)
+				{
+					return;
+				} else if(result.state() == State.CANCELLED || result.state() == State.FAILED)
+				{
+					task.cancel();
+					return;
+				}
+			}
+			task.cancel();
 			ByteArrayOutputStream streamout = new ByteArrayOutputStream();
 	        DataOutputStream out = new DataOutputStream(streamout);
 	        try {
@@ -419,7 +454,7 @@ public class TeleportHandler
 				e.printStackTrace();
 			}
 		    target.getCurrentServer().ifPresent(y -> y.sendPluginMessage(StaticValues.TP_TOSPIGOT, streamout.toByteArray()));
-		}).delay(delay, TimeUnit.MILLISECONDS).schedule();
+		}).repeat(20, TimeUnit.MILLISECONDS).schedule();
 	}
 	
 	//Player to has accepted
