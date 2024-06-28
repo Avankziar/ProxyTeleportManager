@@ -145,12 +145,26 @@ public class YamlManager
 	
 	public void initConfigBungee() //INFO:Config
 	{
+		addConfig("Language",
+				new Object[] {
+				"ENG"},
+				new Object[] {
+				"Die eingestellte Sprache. Von Haus aus sind 'ENG=Englisch' und 'GER=Deutsch' mit dabei.",
+				"Falls andere Sprachen gewünsch sind, kann man unter den folgenden Links nachschauen, welchs Kürzel für welche Sprache gedacht ist.",
+				"Siehe hier nach, sowie den Link, welche dort auch für Wikipedia steht.",
+				"https://github.com/Avankziar/RootAdministration/blob/main/src/main/java/me/avankziar/roota/general/Language.java",
+				"The set language. By default, ENG=English and GER=German are included.",
+				"If other languages are required, you can check the following links to see which abbreviation is intended for which language.",
+				"See here, as well as the link, which is also there for Wikipedia.",
+				"https://github.com/Avankziar/RootAdministration/blob/main/src/main/java/me/avankziar/roota/general/Language.java"});
 		addConfig("DeleteDeathBackAfterUsing", 
 				new Object[] {
 				true},
 				new Object[] {
+				"",
 				"Beschreibt, ob ein Deathback nach dem Nutzen des /deathback Befehls gelöscht werden soll.",
 				"Wenn true, kann der /deathback Befehl nur ein einziges Mal pro Tod genutzt werden.",
+				"",
 				"Describes whether a deathback should be deleted after using the /deathback command.",
 				"If true, the /deathback command can only be used once per death."});
 		/*configKeys.put("DeleteDeathBackAfterUsing"

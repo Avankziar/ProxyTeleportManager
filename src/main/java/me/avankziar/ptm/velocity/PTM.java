@@ -42,7 +42,7 @@ public class PTM
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) 
     {
-    	PluginDescription pd = server.getPluginManager().getPlugin("me-avankziar-proxyteleportmanager").get().getDescription();
+    	PluginDescription pd = server.getPluginManager().getPlugin("avankziar-proxyteleportmanager").get().getDescription();
         List<String> dependencies = new ArrayList<>();
         pd.getDependencies().stream().allMatch(x -> dependencies.add(x.toString()));
         //https://patorjk.com/software/taag/#p=display&f=ANSI%20Shadow&t=PTM
