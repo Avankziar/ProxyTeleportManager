@@ -23,7 +23,7 @@ import main.java.me.avankziar.ptm.velocity.PTM;
 import main.java.me.avankziar.ptm.velocity.assistant.ChatApi;
 import main.java.me.avankziar.ptm.velocity.assistant.StaticValues;
 import main.java.me.avankziar.ptm.velocity.listener.PluginMessageListener;
-import main.java.me.avankziar.ptm.velocity.objects.ForbiddenHandlerBungee;
+import main.java.me.avankziar.ptm.velocity.objects.ForbiddenHandler;
 import main.java.me.avankziar.ptm.velocity.objects.Mechanics;
 import main.java.me.avankziar.ptm.velocity.objects.ServerLocation;
 import main.java.me.avankziar.ptm.velocity.objects.Teleport;
@@ -109,8 +109,8 @@ public class TeleportHandler
 			       fsc.sendPluginMessage(StaticValues.TP_TOSPIGOT, streamout.toByteArray());
 	        	} else
 	        	{
-	        		if(ForbiddenHandlerBungee.getValues(true, Mechanics.TPA_ONLY).contains(fsc.getServerInfo().getName())
-	        				|| ForbiddenHandlerBungee.getValues(true, Mechanics.TPA_ONLY).contains(tsc.getServerInfo().getName()))
+	        		if(ForbiddenHandler.getValues(true, Mechanics.TPA_ONLY).contains(fsc.getServerInfo().getName())
+	        				|| ForbiddenHandler.getValues(true, Mechanics.TPA_ONLY).contains(tsc.getServerInfo().getName()))
 	        		{
 	        			ByteArrayOutputStream streamout = new ByteArrayOutputStream();
 	    		        DataOutputStream out = new DataOutputStream(streamout);
@@ -123,9 +123,9 @@ public class TeleportHandler
 	    		        fsc.sendPluginMessage(StaticValues.TP_TOSPIGOT, streamout.toByteArray());
 	    			    return;
 	        		}
-	        		if(ForbiddenHandlerBungee.getValues(false, Mechanics.TPA_ONLY).contains(
+	        		if(ForbiddenHandler.getValues(false, Mechanics.TPA_ONLY).contains(
 	        				TeleportHandler.getPlayerWorld().get(fromName))
-	        				|| ForbiddenHandlerBungee.getValues(false, Mechanics.TPA_ONLY).contains(
+	        				|| ForbiddenHandler.getValues(false, Mechanics.TPA_ONLY).contains(
 	        						TeleportHandler.getPlayerWorld().get(toName)))
 	        		{
 	        			ByteArrayOutputStream streamout = new ByteArrayOutputStream();

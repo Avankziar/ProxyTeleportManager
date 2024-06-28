@@ -2,17 +2,20 @@ package main.java.me.avankziar.ptm.velocity.objects;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Optional;
+
+import com.velocitypowered.api.proxy.Player;
 
 import main.java.me.avankziar.ptm.velocity.PTM;
 
-public class ForbiddenHandlerBungee
+public class ForbiddenHandler
 {	
 	private static LinkedHashMap<Mechanics, ArrayList<String>> forbiddenListServer = new LinkedHashMap<>();
 	private static LinkedHashMap<Mechanics, ArrayList<String>> forbiddenListWorld = new LinkedHashMap<>();
 	
 	public static void init(PTM plugin)
 	{		
-		/*ArrayList<String> backFBS = (ArrayList<String>) plugin.getYamlHandler().getForbiddenConfig()
+		ArrayList<String> backFBS = (ArrayList<String>) plugin.getYamlHandler().getForbiddenConfig()
 																		.getStringList("ForbiddenToCreate.Back.Server");
 		ArrayList<String> backFBW = (ArrayList<String>) plugin.getYamlHandler().getForbiddenConfig()
 																		.getStringList("ForbiddenToCreate.Back.World");
@@ -28,7 +31,7 @@ public class ForbiddenHandlerBungee
 																		.getStringList("ForbiddenToUse.TPA.Server");
 		ArrayList<String> tpaFBW = (ArrayList<String>) plugin.getYamlHandler().getForbiddenConfig()
 																		.getStringList("ForbiddenToUse.TPA.World");
-		add(Mechanics.TPA_ONLY, tpaFBS, tpaFBW);*/
+		add(Mechanics.TPA_ONLY, tpaFBS, tpaFBW);
 	}
 	
 	public static void add(Mechanics mechanic, ArrayList<String> server, ArrayList<String> world)
@@ -88,7 +91,12 @@ public class ForbiddenHandlerBungee
 	
 	private static boolean isForbiddenTask(Back back, String playername, Mechanics mechanics)
 	{
-		/*BungeeTeleportManager plugin = BungeeTeleportManager.getPlugin();
+		PTM plugin = PTM.getPlugin();
+		Optional<Player> opplayer = plugin.getServer().getPlayer(playername);
+		if(opplayer.isEmpty())
+		{
+			return true;
+		}
 		switch(mechanics)
 		{
 		case SAVEPOINT:
@@ -96,8 +104,7 @@ public class ForbiddenHandlerBungee
 		default: //Alle Methoden, die NICHT die hier 4 angegebenen sind, ist auto immer BACK, weil die nur hier zwischen den 4 unterschieden
 			//werden soll.
 			if(getValues(true, Mechanics.BACK).contains(
-					plugin.getProxy().getPlayer(playername)
-        				.getServer().getInfo().getName()))
+					opplayer.get().getCurrentServer().get().getServerInfo().getName()))
 			{
 				return true;
 			}
@@ -111,8 +118,7 @@ public class ForbiddenHandlerBungee
 		case DEATHBACK:
 		case TPA_ONLY:
 			if(getValues(true, mechanics).contains(
-					plugin.getProxy().getPlayer(playername)
-        				.getServer().getInfo().getName()))
+					opplayer.get().getCurrentServer().get().getServerInfo().getName()))
 			{
 				return true;
 			}
@@ -122,7 +128,7 @@ public class ForbiddenHandlerBungee
 				return true;
 			}
 			break;
-		}*/
+		}
 		return false;
 	}
 }

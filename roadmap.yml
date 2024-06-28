@@ -1,3 +1,7 @@
+Build 0-0-7
+- Yaml File Handling added
+- Config & ForbiddenConfig added
+- Config & ForbiddenConfig Comments added
 Build 0-0-6
 - Tp/Tpa Message Formate fixed
 - Custom Mechanic Velocity response implemented and up to standart like Back/Home etc.
@@ -8,8 +12,6 @@ Build 0-0-6
 - Respawn Mechanic Velocity response implemented and up to standart like Back/Home etc.
 - Safe SubMechanic Velocity response implemented and up to standart like Back/Home etc.
 - SavePoint Mechanic Velocity response implemented and up to standart like Back/Home etc.
-
-
 Build 0-0-5
 - pom.xml fixed
 - Back, Home, Portal, Tp/Tpa & Warp Mechanic for Velocity Handling streamlined.

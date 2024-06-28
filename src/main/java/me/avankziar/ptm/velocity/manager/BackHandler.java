@@ -24,7 +24,7 @@ import main.java.me.avankziar.ptm.velocity.assistant.ChatApi;
 import main.java.me.avankziar.ptm.velocity.assistant.StaticValues;
 import main.java.me.avankziar.ptm.velocity.listener.PluginMessageListener;
 import main.java.me.avankziar.ptm.velocity.objects.Back;
-import main.java.me.avankziar.ptm.velocity.objects.ForbiddenHandlerBungee;
+import main.java.me.avankziar.ptm.velocity.objects.ForbiddenHandler;
 import main.java.me.avankziar.ptm.velocity.objects.Mechanics;
 import main.java.me.avankziar.ptm.velocity.objects.ServerLocation;
 
@@ -36,13 +36,15 @@ public class BackHandler
 	private static HashMap<String,Back> deathBackLocations = new HashMap<>();
 	public static ArrayList<String> pendingNewBackRequests = new ArrayList<>();
 	
+	private boolean deleteDeathBack = true;
+	
 	public BackHandler(PTM plugin)
 	{
 		this.plugin = plugin;
 		server = plugin.getServer();
+		deleteDeathBack = plugin.getYamlHandler().getConfig().getBoolean("DeleteDeathBackAfterUsing", true);
 	}
 	
-	private boolean deleteDeathBack = true; //FIXME: Wie es im original BTM machen
 	public void pluginMessage(PluginMessageEvent event) throws IOException
 	{
 		DataInputStream in = new DataInputStream(new ByteArrayInputStream(event.getData()));
@@ -52,7 +54,7 @@ public class BackHandler
         	String uuid = in.readUTF();
         	String name = in.readUTF();
         	Back back = BackHandler.getTaskBack(in, uuid, name);
-        	if(ForbiddenHandlerBungee.isForbidden(back, name, Mechanics.BACK, false))
+        	if(ForbiddenHandler.isForbidden(back, name, Mechanics.BACK, false))
     		{
         		return;
     		}
@@ -66,7 +68,7 @@ public class BackHandler
         	String uuid = in.readUTF();
         	String name = in.readUTF();
         	Back back = BackHandler.getTaskBack(in, uuid, name);
-        	if(ForbiddenHandlerBungee.isForbidden(back, name, Mechanics.BACK, false))
+        	if(ForbiddenHandler.isForbidden(back, name, Mechanics.BACK, false))
     		{
         		return;
     		}
@@ -98,7 +100,7 @@ public class BackHandler
         			player.sendMessage(ChatApi.tl(oldbacknull));
         		}
         		//Sorgt dafür, dass das Back nicht überschrieben, falls der Spieler in einer Forbidden Welt oder Server ist.
-            	if(!ForbiddenHandlerBungee.isForbidden(back, name, Mechanics.BACK, false))
+            	if(!ForbiddenHandler.isForbidden(back, name, Mechanics.BACK, false))
         		{
             		BackHandler.getBackLocations().replace(name, back);
         		}
@@ -112,7 +114,7 @@ public class BackHandler
         	float oldyaw = oldback.getLocation().getYaw();
         	float oldpitch = oldback.getLocation().getPitch();
         	//Sorgt dafür, dass das Back nicht überschrieben, falls der Spieler in einer Forbidden Welt oder Server ist.
-        	if(!ForbiddenHandlerBungee.isForbidden(back, name, Mechanics.BACK, false))
+        	if(!ForbiddenHandler.isForbidden(back, name, Mechanics.BACK, false))
     		{
         		if(!BackHandler.getBackLocations().containsKey(name))
             	{
@@ -129,7 +131,7 @@ public class BackHandler
         	String uuid = in.readUTF();
         	String name = in.readUTF();
         	Back back = BackHandler.getTaskBack(in, uuid, name);
-        	if(ForbiddenHandlerBungee.isForbidden(back, name, Mechanics.DEATHBACK, true))
+        	if(ForbiddenHandler.isForbidden(back, name, Mechanics.DEATHBACK, true))
     		{
     			return;
     		}
@@ -234,7 +236,7 @@ public class BackHandler
 	
 	public static void updateBack(Back back, String playername, Mechanics mechanics)
 	{
-		if(ForbiddenHandlerBungee.isForbidden(back, playername, mechanics, false))
+		if(ForbiddenHandler.isForbidden(back, playername, mechanics, false))
 		{
 			return;
 		}
