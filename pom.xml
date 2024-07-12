@@ -19,12 +19,12 @@
 	</properties>
 	<build>
 		<defaultGoal>clean package</defaultGoal>
-		<finalName>proxyteleportmanager-${project.version}</finalName>
+		<finalName>${project.artifactId}-${project.version}</finalName>
 		<sourceDirectory>${basedir}/src/</sourceDirectory>
 		<resources>
 			<resource>
 				<targetPath>.</targetPath>
-				<directory>${basedir}/src/</directory>
+				<directory>${basedir}/src/resources/</directory>
 				<filtering>true</filtering>
 				<excludes>
 					<exclude>**/*.java</exclude>

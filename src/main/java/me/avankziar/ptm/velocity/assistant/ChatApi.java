@@ -10,16 +10,6 @@ public class ChatApi
 	private static final Pattern po = Pattern.compile("(?<!\\\\)(&#[a-fA-F0-9]{6})");
 	private static final Pattern pt = Pattern.compile("(?<!\\\\)(&[a-fA-F0-9k-oK-OrR]{1})");
 	
-	public static void main(String[] args)
-	{
-		String r = "&eDas ist das &4alte &#ff6c0aBukkit &rFormat.";
-		String s = "&aAkzeptieren+✔~click@SUGGEST_COMMAND@/warp+w1~hover@SHOW_TEXT@&aKlicke+hier+um+die+Teleportanfrage+anzunehmen. &f| "
-				+ "&cAblehnen+✖~click@SUGGEST_COMMAND@/warp+w2~hover@SHOW_TEXT@&cKlicke+hier+um+die+Teleportanfrage+abzulehnen!";
-		System.out.println("Start");
-		System.out.println(oldBukkitFormat(r));
-		System.out.println(testgenerateOldTextComponentFormat(s));
-	}
-	
 	public static Component text(String s)
 	{
 		return Component.text(s);
@@ -256,7 +246,7 @@ public class ChatApi
 		}
 	}
 	
-	public static String testgenerateOldTextComponentFormat(String message)
+	/*public static String testgenerateOldTextComponentFormat(String message)
 	{
 		String idclick = "click";
 		String idhover = "hover";
@@ -332,5 +322,5 @@ public class ChatApi
 			tc.append(newtc.toString());
 		}
 		return tc.toString();
-	}
+	}*/
 }

@@ -56,7 +56,7 @@ public class YamlHandler
 	
 	public boolean mkdirStaticFiles()
 	{
-		File directory = new File(dataDirectory.getParent().toFile(), "/ProxyTeleportHandler/");
+		File directory = new File(dataDirectory.getParent().toFile(), "/ProxyTeleportManager/");
 		if(!directory.exists())
 		{
 			directory.mkdirs();

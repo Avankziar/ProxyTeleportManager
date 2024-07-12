@@ -42,6 +42,7 @@ public class PTM
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) 
     {
+    	logger = Logger.getLogger("PTM");
     	PluginDescription pd = server.getPluginManager().getPlugin("avankziar-proxyteleportmanager").get().getDescription();
         List<String> dependencies = new ArrayList<>();
         pd.getDependencies().stream().allMatch(x -> dependencies.add(x.toString()));

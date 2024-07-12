@@ -44,7 +44,7 @@ public class PluginMessageListener
 		{
         	switch(event.getIdentifier().getId())
         	{
-        	case StaticValues.GENERAL_TOBUNGEE_:
+        	case StaticValues.GENERAL_TOBUNGEE_: break;
         	case StaticValues.BACK_TOBUNGEE_:
         		new BackHandler(plugin).pluginMessage(event); return;
         	case StaticValues.CUSTOM_TOBUNGEE_:
