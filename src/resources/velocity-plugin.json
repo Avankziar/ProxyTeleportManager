@@ -1,7 +1,0 @@
-{"id":"avankziar-proxyteleportmanager",
-"name":"ProxyTeleportManager",
-"version":"0-0-7",
-"description":"Teleportsystem for Velocity and maybe more...",
-"authors":["Avankziar"],
-"dependencies":[],
-"main":"main.java.me.avankziar.ptm.velocity.PTM"}
